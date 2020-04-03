@@ -59,3 +59,4 @@ Route::post('payment/wechat/refund_notify', 'PaymentController@wechatRefundNotif
 
 Route::get('products/{product}', 'ProductsController@show')->name('products.show');
 Route::post('installments.alipay.notify');
+Route::post('installments/wechat/refund_notify', 'InstallmentsController@wechatRefundNotify')->name('installments.wechat.refund_notify');

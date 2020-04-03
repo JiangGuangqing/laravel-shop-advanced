@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Exceptions\CouponCodeUnavailableException;
+use App\Jobs\RefundInstallmentOrder;
 use App\Models\CouponCode;
 use App\Models\User;
 use App\Models\UserAddress;
@@ -176,8 +177,16 @@ class OrderService
                     ]);
                 }
                 break;
+            case 'installment':
+                $order->update([
+                    'refund_no' => Order::getAvailableRefundNo(),
+                    'refund_status' => Order::REFUND_STATUS_PROCESSING,
+                ]);
+                //触发退款异步任务
+                dispatch(new RefundInstallmentOrder($order));
+                break;
             default:
-                throw new InternalException('未知订单支付方式：'.$order->payment_method);
+                throw new InternalException('未知订单支付方式：' . $order->payment_method);
                 break;
         }
     }
