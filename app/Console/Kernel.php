@@ -27,6 +27,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')
         //          ->hourly();
         $schedule->command('corn:finish-crowdfunding')->everyMinute();
+        $schedule->command('cron:calculate-installment-fine')->daily();
     }
 
     /**
